@@ -1,0 +1,10 @@
+*~
+*.swp
+*.DS_Store
+tags*
+*.bak
+*.BAK
+
+__debug_bin
+memote-server
+.vscode/
