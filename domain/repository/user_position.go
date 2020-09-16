@@ -1,7 +1,11 @@
 package repository
 
-import "github.com/nonotakujet/memote-server/domain/model"
+import (
+	"context"
+
+	"github.com/nonotakujet/memote-server/domain/model"
+)
 
 type UserPosition interface {
-	Create(*model.UserPosition) (*model.UserPosition, error)
+	Create(context.Context, *model.UserPosition) (*model.UserPosition, error)
 }

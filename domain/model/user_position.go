@@ -4,8 +4,8 @@ import "time"
 
 // UserPosition holds about user position snapshot
 type UserPosition struct {
-	Latitude  int64
-	Longitude int64
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	Latitude  int64     `json: "latitude"`
+	Longitude int64     `json: "longitude"`
+	CreatedAt time.Time `json: "createdAt"`
+	UpdatedAt time.Time `json: "updatedAt"`
 }

@@ -1,22 +1,31 @@
 package persistence
 
 import (
+	"context"
+	"log"
+
 	"github.com/nonotakujet/memote-server/domain/model"
 	"github.com/nonotakujet/memote-server/domain/repository"
 )
 
 // UserPositionRepository holds user position inteface
 type UserPositionRepository struct {
+	db *DB
 }
 
 // NewUserPositionRepository new user position
-func NewUserPositionRepository() repository.UserPosition {
-	newRepo := &UserPositionRepository{}
+func NewUserPositionRepository(db *DB) repository.UserPosition {
+	newRepo := &UserPositionRepository{
+		db: db,
+	}
 	return newRepo
 }
 
 // Create UserPosition
-func (r *UserPositionRepository) Create(userPosition *model.UserPosition) (*model.UserPosition, error) {
-	// todo : nonomura - implement db access.
-	return userPosition, nil
+func (r *UserPositionRepository) Create(ctx context.Context, userPosition *model.UserPosition) (*model.UserPosition, error) {
+	_, _, err := r.db.client.Collection("user_position").Add(ctx, userPosition)
+	if err != nil {
+		log.Fatalf("Failed adding alovelace: %v", err)
+	}
+	return userPosition, err
 }

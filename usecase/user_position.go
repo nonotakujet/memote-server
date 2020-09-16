@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"context"
 	"time"
 
 	"github.com/nonotakujet/memote-server/domain/model"
@@ -8,7 +9,7 @@ import (
 )
 
 type PositionUseCase interface {
-	Post(latitude int64, longitude int64) *model.UserPosition
+	Post(ctx context.Context, atitude int64, longitude int64) *model.UserPosition
 }
 
 type positionUseCase struct {
@@ -21,14 +22,14 @@ func NewPositionUseCase(repo repository.UserPosition) PositionUseCase {
 	}
 }
 
-func (u *positionUseCase) Post(latitude int64, longitude int64) *model.UserPosition {
+func (u *positionUseCase) Post(ctx context.Context, latitude int64, longitude int64) *model.UserPosition {
 	userPositionModel := &model.UserPosition{
 		Latitude:  latitude,
 		Longitude: longitude,
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}
-	u.userPositionRepo.Create(userPositionModel)
+	u.userPositionRepo.Create(ctx, userPositionModel)
 
 	return userPositionModel
 }

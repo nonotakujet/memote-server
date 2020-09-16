@@ -29,6 +29,7 @@ func NewPositionHandler(repo registry.Repository) PositionHandler {
 }
 
 func (p *positionHandler) Post(w http.ResponseWriter, r *http.Request, pr httprouter.Params) {
+	ctx := r.Context()
 
 	type response struct {
 		Latitude  int64     `json:"latitude"`
@@ -39,7 +40,7 @@ func (p *positionHandler) Post(w http.ResponseWriter, r *http.Request, pr httpro
 
 	latitude, _ := strconv.Atoi(r.FormValue("la"))
 	longitude, _ := strconv.Atoi(r.FormValue("lo"))
-	userPositionModel := p.usecase.Post(int64(latitude), int64(longitude))
+	userPositionModel := p.usecase.Post(ctx, int64(latitude), int64(longitude))
 
 	//取得したドメインモデルをresponseに変換
 	res := new(response)
