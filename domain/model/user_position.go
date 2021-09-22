@@ -3,9 +3,10 @@ package model
 import "time"
 
 // UserPosition holds about user position snapshot
+// https://firebase.google.cn/docs/firestore/manage-data/add-data?hl=ja#custom_objects
 type UserPosition struct {
-	Latitude  int64     `json: "latitude"`
-	Longitude int64     `json: "longitude"`
-	CreatedAt time.Time `json: "createdAt"`
-	UpdatedAt time.Time `json: "updatedAt"`
+	Latitude  int64     `firestore:"latitude,omitempty"`
+	Longitude int64     `firestore:"longitude,omitempty"`
+	CreatedAt time.Time `firestore:"createdAt,omitempty"`
+	UpdatedAt time.Time `firestore:"updatedAt,omitempty"`
 }

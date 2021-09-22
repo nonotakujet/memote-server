@@ -6,14 +6,12 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/julienschmidt/httprouter"
-
 	"github.com/nonotakujet/memote-server/registry"
 	"github.com/nonotakujet/memote-server/usecase"
 )
 
 type PositionHandler interface {
-	Post(w http.ResponseWriter, r *http.Request, pr httprouter.Params)
+	Post(w http.ResponseWriter, r *http.Request)
 }
 
 type positionHandler struct {
@@ -28,7 +26,7 @@ func NewPositionHandler(repo registry.Repository) PositionHandler {
 	}
 }
 
-func (p *positionHandler) Post(w http.ResponseWriter, r *http.Request, pr httprouter.Params) {
+func (p *positionHandler) Post(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	type response struct {
@@ -52,9 +50,7 @@ func (p *positionHandler) Post(w http.ResponseWriter, r *http.Request, pr httpro
 	//クライアントにレスポンスを返却
 	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(res); err != nil {
-		http.Error(w, "Internal Server Error", 500)
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
-
-	return
 }

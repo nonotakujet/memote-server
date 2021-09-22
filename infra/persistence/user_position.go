@@ -22,8 +22,8 @@ func NewUserPositionRepository(db *DB) repository.UserPosition {
 }
 
 // Create UserPosition
-func (r *UserPositionRepository) Create(ctx context.Context, userPosition *model.UserPosition) (*model.UserPosition, error) {
-	_, _, err := r.db.client.Collection("user_position").Add(ctx, userPosition)
+func (r *UserPositionRepository) Create(ctx context.Context, uid *model.UID, userPosition *model.UserPosition) (*model.UserPosition, error) {
+	_, _, err := r.db.client.Collection("users").Doc(uid.ID).Collection("user_position").Add(ctx, userPosition)
 	if err != nil {
 		log.Fatalf("Failed adding alovelace: %v", err)
 	}

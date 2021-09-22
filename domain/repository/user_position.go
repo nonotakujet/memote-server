@@ -7,5 +7,5 @@ import (
 )
 
 type UserPosition interface {
-	Create(context.Context, *model.UserPosition) (*model.UserPosition, error)
+	Create(context.Context, *model.UID, *model.UserPosition) (*model.UserPosition, error)
 }
