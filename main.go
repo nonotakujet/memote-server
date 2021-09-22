@@ -6,10 +6,13 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
 	"cloud.google.com/go/firestore"
-	"github.com/julienschmidt/httprouter"
+	firebase "firebase.google.com/go"
+	"github.com/go-chi/chi"
 
+	"github.com/nonotakujet/memote-server/domain/model"
 	"github.com/nonotakujet/memote-server/handler"
 	"github.com/nonotakujet/memote-server/registry"
 )
@@ -17,7 +20,7 @@ import (
 func main() {
 	// Get a Firestore client.
 	ctx := context.Background()
-	client := createClient(ctx)
+	client := createFirestoreClient(ctx)
 	defer client.Close()
 
 	// registryの生成
@@ -26,18 +29,23 @@ func main() {
 	// handlers.
 	positionHandler := handler.NewPositionHandler(repo)
 
-	//ルーティングの設定
-	router := httprouter.New()
-	router.GET("/api/positions", positionHandler.Post)
-	router.POST("/api/positions", positionHandler.Post)
+	// routing.
+	r := chi.NewRouter()
+
+	// protected routes
+	r.Group(func(r chi.Router) {
+		r.Use(verifyFirebaseToken)
+		r.Get("/positions", positionHandler.Post)
+		r.Post("/positions", positionHandler.Post)
+	})
 
 	//サーバー起動
 	port := ":8080" //"3000"だとエラーになる
-	fmt.Println(`Server Start >> http:// localhost:%d`, port)
-	log.Fatal(http.ListenAndServe(port, router))
+	fmt.Println(`Server Start >> http://localhost:%d`, port)
+	log.Fatal(http.ListenAndServe(port, r))
 }
 
-func createClient(ctx context.Context) *firestore.Client {
+func createFirestoreClient(ctx context.Context) *firestore.Client {
 	// Sets your Google Cloud Platform project ID.
 	projectID := os.Getenv("GOOGLE_CLOUD_PROJECT")
 	if projectID == "" {
@@ -60,4 +68,37 @@ func createClient(ctx context.Context) *firestore.Client {
 	// Close client when done with
 	// defer client.Close()
 	return client
+}
+
+func verifyFirebaseToken(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+		// Initialize default app
+		ctx := context.Background()
+
+		app, err := firebase.NewApp(ctx, nil)
+		if err != nil {
+			log.Printf("error: %v\n", err)
+			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+			return
+		}
+		auth, err := app.Auth(ctx)
+		if err != nil {
+			log.Printf("error: %v\n", err)
+			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+			return
+		}
+
+		authHeader := r.Header.Get("Authorization")
+		idToken := strings.Replace(authHeader, "Bearer ", "", 1)
+		token, err := auth.VerifyIDToken(ctx, idToken)
+		if err != nil {
+			log.Printf("error: %v\n", err)
+			http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
+			return
+		}
+
+		newContext := model.ContextWithUID(r.Context(), model.NewUID(token.UID))
+		next.ServeHTTP(w, r.WithContext(newContext))
+	})
 }

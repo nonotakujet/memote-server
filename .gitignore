@@ -4,6 +4,7 @@
 tags*
 *.bak
 *.BAK
+*.code-workspace
 
 __debug_bin
 memote-server

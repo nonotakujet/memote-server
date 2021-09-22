@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"log"
 	"time"
 
 	"github.com/nonotakujet/memote-server/domain/model"
@@ -23,13 +24,18 @@ func NewPositionUseCase(repo repository.UserPosition) PositionUseCase {
 }
 
 func (u *positionUseCase) Post(ctx context.Context, latitude int64, longitude int64) *model.UserPosition {
+	uid, err := model.UserFromContext(ctx)
+	if err != nil {
+		log.Fatalf("Failed adding alovelace: %v", err)
+	}
+
 	userPositionModel := &model.UserPosition{
 		Latitude:  latitude,
 		Longitude: longitude,
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}
-	u.userPositionRepo.Create(ctx, userPositionModel)
+	u.userPositionRepo.Create(ctx, uid, userPositionModel)
 
 	return userPositionModel
 }
