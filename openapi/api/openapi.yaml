@@ -7,6 +7,37 @@ servers:
 security:
 - bearerAuth: []
 paths:
+  /recommended_records:
+    get:
+      operationId: getRecommendedRecords
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FixedRecordViewModel'
+          description: Successfully get recommended record
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorViewModel'
+          description: RequestBody is invalid
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorViewModel'
+          description: Token missed or invalid
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorViewModel'
+          description: Internal error
+      summary: get recommended records
+      tags:
+      - recommended_records
   /records:
     post:
       operationId: postRecords
@@ -47,6 +78,49 @@ paths:
       - records
 components:
   schemas:
+    FixedRecordViewModel:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        mainTitle: mainTitle
+        mainPicture: mainPicture
+        locations:
+        - latitude: 0.8008281904610115
+          name: name
+          startTime: 2000-01-23T04:56:07.000+00:00
+          endTime: 2000-01-23T04:56:07.000+00:00
+          pictures:
+          - pictures
+          - pictures
+          longitude: 6.027456183070403
+        - latitude: 0.8008281904610115
+          name: name
+          startTime: 2000-01-23T04:56:07.000+00:00
+          endTime: 2000-01-23T04:56:07.000+00:00
+          pictures:
+          - pictures
+          - pictures
+          longitude: 6.027456183070403
+        id: id
+      properties:
+        id:
+          type: string
+        mainTitle:
+          type: string
+        mainPicture:
+          type: string
+        locations:
+          items:
+            $ref: '#/components/schemas/StayedLocationViewModel'
+          type: array
+        createdAt:
+          format: date-time
+          type: string
+      required:
+      - createdAt
+      - id
+      - locations
+      - mainPicture
+      - mainTitle
     RecordViewModel:
       example:
         createdAt: 2000-01-23T04:56:07.000+00:00
@@ -72,6 +146,42 @@ components:
       - createdAt
       - id
       - locations
+    StayedLocationViewModel:
+      example:
+        latitude: 0.8008281904610115
+        name: name
+        startTime: 2000-01-23T04:56:07.000+00:00
+        endTime: 2000-01-23T04:56:07.000+00:00
+        pictures:
+        - pictures
+        - pictures
+        longitude: 6.027456183070403
+      properties:
+        name:
+          type: string
+        latitude:
+          format: double
+          type: number
+        longitude:
+          format: double
+          type: number
+        pictures:
+          items:
+            type: string
+          type: array
+        startTime:
+          format: date-time
+          type: string
+        endTime:
+          format: date-time
+          type: string
+      required:
+      - endTime
+      - latitude
+      - longitude
+      - name
+      - pictures
+      - startTime
     LocationViewModel:
       example:
         time: 2000-01-23T04:56:07.000+00:00

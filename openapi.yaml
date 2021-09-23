@@ -5,6 +5,37 @@ info:
 servers:
   - url: https://memote.an.r.appspot.com/
 paths:
+  /recommended_records:
+    get:
+      summary: get recommended records
+      operationId: getRecommendedRecords
+      tags:
+        - recommended_records
+      responses:
+        '200':
+          description: Successfully get recommended record
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FixedRecordViewModel"
+        '400':
+          description: RequestBody is invalid
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorViewModel"
+        '401':
+          description: Token missed or invalid
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorViewModel"
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorViewModel"
   /records:
     post:
       summary: post records
@@ -49,6 +80,27 @@ components:
       type: http
       scheme: bearer
   schemas:
+    FixedRecordViewModel:
+      required:
+        - id
+        - mainTitle
+        - mainPicture
+        - locations
+        - createdAt
+      properties:
+        id:
+          type: string
+        mainTitle:
+          type: string
+        mainPicture:
+          type: string
+        locations:
+          type: array
+          items:
+            $ref: "#/components/schemas/StayedLocationViewModel"
+        createdAt:
+          type: string
+          format: date-time
     RecordViewModel:
       required:
         - id
@@ -62,6 +114,33 @@ components:
           items:
             $ref: "#/components/schemas/LocationViewModel"
         createdAt:
+          type: string
+          format: date-time
+    StayedLocationViewModel:
+      required:
+        - name
+        - latitude
+        - longitude
+        - pictures
+        - startTime
+        - endTime
+      properties:
+        name:
+          type: string
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+        pictures:
+          type: array
+          items:
+            type: string
+        startTime:
+          type: string
+          format: date-time
+        endTime:
           type: string
           format: date-time
     LocationViewModel:
