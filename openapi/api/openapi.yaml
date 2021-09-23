@@ -1,0 +1,84 @@
+openapi: 3.0.0
+info:
+  title: memote
+  version: 1.0.0
+servers:
+- url: https://memote.an.r.appspot.com/
+security:
+- bearerAuth: []
+paths:
+  /locations:
+    post:
+      operationId: postLocations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LocationsViewModel'
+        description: the content of the locations
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessViewModel'
+          description: Successfully posted location
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorViewModel'
+          description: RequestBody is invalid
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorViewModel'
+          description: Token missed or invalid
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorViewModel'
+          description: Internal error
+      summary: post a locations
+      tags:
+      - locations
+components:
+  schemas:
+    LocationsViewModel:
+      items:
+        $ref: '#/components/schemas/LocationViewModel'
+      type: array
+    LocationViewModel:
+      example:
+        time: 2000-01-23T04:56:07.000+00:00
+        lat: lat
+        long: 0
+      properties:
+        lat:
+          type: string
+        long:
+          type: integer
+        time:
+          format: date-time
+          type: string
+      required:
+      - lat
+      - long
+      - time
+    SuccessViewModel:
+      example:
+        success: success
+      properties:
+        success:
+          type: string
+    ErrorViewModel:
+      properties:
+        error:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      scheme: bearer
+      type: http

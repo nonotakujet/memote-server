@@ -1,0 +1,78 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: memote
+servers:
+  - url: https://memote.an.r.appspot.com/
+paths:
+  /locations:
+    post:
+      summary: post a locations
+      operationId: postLocations
+      tags:
+        - locations
+      requestBody:
+        description: the content of the locations
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LocationsViewModel"
+      responses:
+        '200':
+          description: Successfully posted location
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessViewModel"
+        '400':
+          description: RequestBody is invalid
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorViewModel"
+        '401':
+          description: Token missed or invalid
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorViewModel"
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorViewModel"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    LocationsViewModel:
+      type: array
+      items:
+        $ref: "#/components/schemas/LocationViewModel"
+    LocationViewModel:
+      required:
+        - lat
+        - long
+        - time
+      properties:
+        lat:
+          type: string
+        long:
+          type: integer
+        time:
+          type: string
+          format: date-time
+    SuccessViewModel:
+      properties:
+        success:
+          type: string
+    ErrorViewModel:
+      properties:
+        error:
+          type: string
+security:
+    - bearerAuth: []
