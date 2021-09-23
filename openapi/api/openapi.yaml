@@ -7,15 +7,15 @@ servers:
 security:
 - bearerAuth: []
 paths:
-  /locations:
+  /records:
     post:
-      operationId: postLocations
+      operationId: postRecords
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LocationsViewModel'
-        description: the content of the locations
+              $ref: '#/components/schemas/RecordViewModel'
+        description: the content of the record
         required: true
       responses:
         "200":
@@ -23,7 +23,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SuccessViewModel'
-          description: Successfully posted location
+          description: Successfully posted record
         "400":
           content:
             application/json:
@@ -42,25 +42,48 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorViewModel'
           description: Internal error
-      summary: post a locations
+      summary: post records
       tags:
-      - locations
+      - records
 components:
   schemas:
-    LocationsViewModel:
-      items:
-        $ref: '#/components/schemas/LocationViewModel'
-      type: array
+    RecordViewModel:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        locations:
+        - time: 2000-01-23T04:56:07.000+00:00
+          lat: 0.8008281904610115
+          long: 6.027456183070403
+        - time: 2000-01-23T04:56:07.000+00:00
+          lat: 0.8008281904610115
+          long: 6.027456183070403
+        id: id
+      properties:
+        id:
+          type: string
+        locations:
+          items:
+            $ref: '#/components/schemas/LocationViewModel'
+          type: array
+        createdAt:
+          format: date-time
+          type: string
+      required:
+      - createdAt
+      - id
+      - locations
     LocationViewModel:
       example:
         time: 2000-01-23T04:56:07.000+00:00
-        lat: lat
-        long: 0
+        lat: 0.8008281904610115
+        long: 6.027456183070403
       properties:
         lat:
-          type: string
+          format: double
+          type: number
         long:
-          type: integer
+          format: double
+          type: number
         time:
           format: date-time
           type: string

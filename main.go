@@ -27,7 +27,8 @@ func main() {
 	repo := registry.NewRepository(ctx, client)
 
 	// handlers.
-	positionHandler := handler.NewPositionHandler(repo)
+	//	positionHandler := handler.NewPositionHandler(repo)
+	recordHandler := handler.NewRecordHandler(repo)
 
 	// routing.
 	r := chi.NewRouter()
@@ -35,8 +36,7 @@ func main() {
 	// protected routes
 	r.Group(func(r chi.Router) {
 		r.Use(verifyFirebaseToken)
-		r.Get("/positions", positionHandler.Post)
-		r.Post("/positions", positionHandler.Post)
+		r.Post("/records", recordHandler.Post)
 	})
 
 	//サーバー起動

@@ -10,11 +10,13 @@ import (
 
 type Repository interface {
 	NewUserPositionRepository() repository.UserPosition
+	NewUserRecordRepository() repository.UserRecord
 }
 
 type repositoryImpl struct {
 	db                *persistence.DB
 	userPositionoRepo repository.UserPosition
+	userRecordRepo    repository.UserRecord
 }
 
 func NewRepository(ctx context.Context, client *firestore.Client) Repository {
@@ -29,4 +31,11 @@ func (r *repositoryImpl) NewUserPositionRepository() repository.UserPosition {
 		r.userPositionoRepo = persistence.NewUserPositionRepository(r.db)
 	}
 	return r.userPositionoRepo
+}
+
+func (r *repositoryImpl) NewUserRecordRepository() repository.UserRecord {
+	if r.userRecordRepo == nil {
+		r.userRecordRepo = persistence.NewUserRecordRepository(r.db)
+	}
+	return r.userRecordRepo
 }

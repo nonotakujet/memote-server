@@ -7,10 +7,11 @@ import (
 
 	"github.com/nonotakujet/memote-server/domain/model"
 	"github.com/nonotakujet/memote-server/domain/repository"
+	"github.com/nonotakujet/memote-server/domain/viewmodel"
 )
 
 type PositionUseCase interface {
-	Post(ctx context.Context, atitude int64, longitude int64) *model.UserPosition
+	Post(ctx context.Context, locationViewModels []viewmodel.LocationViewModel) *model.UserPosition
 }
 
 type positionUseCase struct {
@@ -23,15 +24,16 @@ func NewPositionUseCase(repo repository.UserPosition) PositionUseCase {
 	}
 }
 
-func (u *positionUseCase) Post(ctx context.Context, latitude int64, longitude int64) *model.UserPosition {
+func (u *positionUseCase) Post(ctx context.Context, locationViewModels []viewmodel.LocationViewModel) *model.UserPosition {
+
 	uid, err := model.UserFromContext(ctx)
 	if err != nil {
-		log.Fatalf("Failed adding alovelace: %v", err)
+		log.Fatalf("Failed get uid from context: %v", err)
 	}
 
 	userPositionModel := &model.UserPosition{
-		Latitude:  latitude,
-		Longitude: longitude,
+		Latitude:  0,
+		Longitude: 0,
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}

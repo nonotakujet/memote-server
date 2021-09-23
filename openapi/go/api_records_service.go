@@ -15,21 +15,21 @@ import (
 	"errors"
 )
 
-// LocationsApiService is a service that implents the logic for the LocationsApiServicer
-// This service should implement the business logic for every endpoint for the LocationsApi API. 
+// RecordsApiService is a service that implents the logic for the RecordsApiServicer
+// This service should implement the business logic for every endpoint for the RecordsApi API. 
 // Include any external packages or services that will be required by this service.
-type LocationsApiService struct {
+type RecordsApiService struct {
 }
 
-// NewLocationsApiService creates a default api service
-func NewLocationsApiService() LocationsApiServicer {
-	return &LocationsApiService{}
+// NewRecordsApiService creates a default api service
+func NewRecordsApiService() RecordsApiServicer {
+	return &RecordsApiService{}
 }
 
-// PostLocations - post a locations
-func (s *LocationsApiService) PostLocations(ctx context.Context, locationViewModel []LocationViewModel) (ImplResponse, error) {
-	// TODO - update PostLocations with the required logic for this service method.
-	// Add api_locations_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
+// PostRecords - post records
+func (s *RecordsApiService) PostRecords(ctx context.Context, recordViewModel RecordViewModel) (ImplResponse, error) {
+	// TODO - update PostRecords with the required logic for this service method.
+	// Add api_records_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
 	//TODO: Uncomment the next line to return response Response(200, SuccessViewModel{}) or use other options such as http.Ok ...
 	//return Response(200, SuccessViewModel{}), nil
@@ -43,6 +43,6 @@ func (s *LocationsApiService) PostLocations(ctx context.Context, locationViewMod
 	//TODO: Uncomment the next line to return response Response(500, ErrorViewModel{}) or use other options such as http.Ok ...
 	//return Response(500, ErrorViewModel{}), nil
 
-	return Response(http.StatusNotImplemented, nil), errors.New("PostLocations method not implemented")
+	return Response(http.StatusNotImplemented, nil), errors.New("PostRecords method not implemented")
 }
 

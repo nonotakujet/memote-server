@@ -19,10 +19,10 @@ import (
 func main() {
 	log.Printf("Server started")
 
-	LocationsApiService := viewmodel.NewLocationsApiService()
-	LocationsApiController := viewmodel.NewLocationsApiController(LocationsApiService)
+	RecordsApiService := viewmodel.NewRecordsApiService()
+	RecordsApiController := viewmodel.NewRecordsApiController(RecordsApiService)
 
-	router := viewmodel.NewRouter(LocationsApiController)
+	router := viewmodel.NewRouter(RecordsApiController)
 
 	log.Fatal(http.ListenAndServe(":8080", router))
 }

@@ -5,22 +5,22 @@ info:
 servers:
   - url: https://memote.an.r.appspot.com/
 paths:
-  /locations:
+  /records:
     post:
-      summary: post a locations
-      operationId: postLocations
+      summary: post records
+      operationId: postRecords
       tags:
-        - locations
+        - records
       requestBody:
-        description: the content of the locations
+        description: the content of the record
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/LocationsViewModel"
+              $ref: "#/components/schemas/RecordViewModel"
       responses:
         '200':
-          description: Successfully posted location
+          description: Successfully posted record
           content:
             application/json:
               schema:
@@ -49,10 +49,21 @@ components:
       type: http
       scheme: bearer
   schemas:
-    LocationsViewModel:
-      type: array
-      items:
-        $ref: "#/components/schemas/LocationViewModel"
+    RecordViewModel:
+      required:
+        - id
+        - locations
+        - createdAt
+      properties:
+        id:
+          type: string
+        locations:
+          type: array
+          items:
+            $ref: "#/components/schemas/LocationViewModel"
+        createdAt:
+          type: string
+          format: date-time
     LocationViewModel:
       required:
         - lat
@@ -60,9 +71,11 @@ components:
         - time
       properties:
         lat:
-          type: string
+          type: number
+          format: double
         long:
-          type: integer
+          type: number
+          format: double
         time:
           type: string
           format: date-time

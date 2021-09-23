@@ -13,11 +13,11 @@ import (
 	"time"
 )
 
-type LocationViewModel struct {
+type RecordViewModel struct {
 
-	Lat float64 `json:"lat"`
+	Id string `json:"id"`
 
-	Long float64 `json:"long"`
+	Locations []LocationViewModel `json:"locations"`
 
-	Time time.Time `json:"time"`
+	CreatedAt time.Time `json:"createdAt"`
 }

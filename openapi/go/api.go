@@ -16,18 +16,18 @@ import (
 
 
 
-// LocationsApiRouter defines the required methods for binding the api requests to a responses for the LocationsApi
-// The LocationsApiRouter implementation should parse necessary information from the http request, 
-// pass the data to a LocationsApiServicer to perform the required actions, then write the service results to the http response.
-type LocationsApiRouter interface { 
-	PostLocations(http.ResponseWriter, *http.Request)
+// RecordsApiRouter defines the required methods for binding the api requests to a responses for the RecordsApi
+// The RecordsApiRouter implementation should parse necessary information from the http request, 
+// pass the data to a RecordsApiServicer to perform the required actions, then write the service results to the http response.
+type RecordsApiRouter interface { 
+	PostRecords(http.ResponseWriter, *http.Request)
 }
 
 
-// LocationsApiServicer defines the api actions for the LocationsApi service
+// RecordsApiServicer defines the api actions for the RecordsApi service
 // This interface intended to stay up to date with the openapi yaml used to generate it, 
 // while the service implementation can ignored with the .openapi-generator-ignore file 
 // and updated with the logic required for the API.
-type LocationsApiServicer interface { 
-	PostLocations(context.Context, []LocationViewModel) (ImplResponse, error)
+type RecordsApiServicer interface { 
+	PostRecords(context.Context, RecordViewModel) (ImplResponse, error)
 }
