@@ -27,12 +27,12 @@ func NewRecommendedRecordsApiService() RecommendedRecordsApiServicer {
 }
 
 // GetRecommendedRecords - get recommended records
-func (s *RecommendedRecordsApiService) GetRecommendedRecords(ctx context.Context) (ImplResponse, error) {
+func (s *RecommendedRecordsApiService) GetRecommendedRecords(ctx context.Context, latitude float64, longitude float64) (ImplResponse, error) {
 	// TODO - update GetRecommendedRecords with the required logic for this service method.
 	// Add api_recommended_records_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
-	//TODO: Uncomment the next line to return response Response(200, FixedRecordViewModel{}) or use other options such as http.Ok ...
-	//return Response(200, FixedRecordViewModel{}), nil
+	//TODO: Uncomment the next line to return response Response(200, []FixedRecordViewModel{}) or use other options such as http.Ok ...
+	//return Response(200, []FixedRecordViewModel{}), nil
 
 	//TODO: Uncomment the next line to return response Response(400, ErrorViewModel{}) or use other options such as http.Ok ...
 	//return Response(400, ErrorViewModel{}), nil

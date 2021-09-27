@@ -29,6 +29,7 @@ func main() {
 	// handlers.
 	//	positionHandler := handler.NewPositionHandler(repo)
 	recordHandler := handler.NewRecordHandler(repo)
+	recommendedRecordsHandler := handler.NewRecommendedRecordsHandler(repo)
 
 	// routing.
 	r := chi.NewRouter()
@@ -37,6 +38,7 @@ func main() {
 	r.Group(func(r chi.Router) {
 		r.Use(verifyFirebaseToken)
 		r.Post("/records", recordHandler.Post)
+		r.Get("/recommended_records", recommendedRecordsHandler.Get)
 	})
 
 	//サーバー起動

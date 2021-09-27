@@ -11,13 +11,26 @@ paths:
       operationId: getRecommendedRecords
       tags:
         - recommended_records
+      parameters:
+        - in: query
+          name: latitude
+          schema:
+            type: number
+            format: double
+          required: true
+        - in: query
+          name: longitude
+          schema:
+            type: number
+            format: double
+          required: true
       responses:
         '200':
           description: Successfully get recommended record
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/FixedRecordViewModel"
+                $ref: "#/components/schemas/FixedRecordViewCollection"
         '400':
           description: RequestBody is invalid
           content:
@@ -80,6 +93,10 @@ components:
       type: http
       scheme: bearer
   schemas:
+    FixedRecordViewCollection:
+      type: array
+      items:
+        $ref: "#/components/schemas/FixedRecordViewModel"
     FixedRecordViewModel:
       required:
         - id

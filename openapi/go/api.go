@@ -35,7 +35,7 @@ type RecordsApiRouter interface {
 // while the service implementation can ignored with the .openapi-generator-ignore file 
 // and updated with the logic required for the API.
 type RecommendedRecordsApiServicer interface { 
-	GetRecommendedRecords(context.Context) (ImplResponse, error)
+	GetRecommendedRecords(context.Context, float64, float64) (ImplResponse, error)
 }
 
 

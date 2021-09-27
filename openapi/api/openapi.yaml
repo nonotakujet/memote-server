@@ -10,12 +10,29 @@ paths:
   /recommended_records:
     get:
       operationId: getRecommendedRecords
+      parameters:
+      - explode: true
+        in: query
+        name: latitude
+        required: true
+        schema:
+          format: double
+          type: number
+        style: form
+      - explode: true
+        in: query
+        name: longitude
+        required: true
+        schema:
+          format: double
+          type: number
+        style: form
       responses:
         "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FixedRecordViewModel'
+                $ref: '#/components/schemas/FixedRecordViewCollection'
           description: Successfully get recommended record
         "400":
           content:
@@ -78,6 +95,10 @@ paths:
       - records
 components:
   schemas:
+    FixedRecordViewCollection:
+      items:
+        $ref: '#/components/schemas/FixedRecordViewModel'
+      type: array
     FixedRecordViewModel:
       example:
         createdAt: 2000-01-23T04:56:07.000+00:00

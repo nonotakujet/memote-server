@@ -41,7 +41,10 @@ func (c *RecommendedRecordsApiController) Routes() Routes {
 
 // GetRecommendedRecords - get recommended records
 func (c *RecommendedRecordsApiController) GetRecommendedRecords(w http.ResponseWriter, r *http.Request) {
-	result, err := c.service.GetRecommendedRecords(r.Context())
+	query := r.URL.Query()
+	latitude := query.Get("latitude")
+	longitude := query.Get("longitude")
+	result, err := c.service.GetRecommendedRecords(r.Context(), latitude, longitude)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		EncodeJSONResponse(err.Error(), &result.Code, w)

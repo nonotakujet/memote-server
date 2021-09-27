@@ -32,13 +32,13 @@ func (u *recordUseCase) Post(ctx context.Context, recordViewModel *viewmodel.Rec
 
 	userRecordModel := &model.UserRecord{
 		Id: recordViewModel.Id,
-		Locations: funk.Map(recordViewModel.Locations, func(location viewmodel.LocationViewModel) model.UserLocation {
-			return model.UserLocation{
+		Locations: funk.Map(recordViewModel.Locations, func(location viewmodel.LocationViewModel) model.UserRecordLocation {
+			return model.UserRecordLocation{
 				Latitude:  location.Lat,
 				Longitude: location.Long,
 				Time:      location.Time,
 			}
-		}).([]model.UserLocation),
+		}).([]model.UserRecordLocation),
 		CreatedAt: recordViewModel.CreatedAt,
 	}
 	u.userRecordRepo.Create(ctx, uid, userRecordModel)
