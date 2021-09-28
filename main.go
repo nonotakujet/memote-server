@@ -43,8 +43,9 @@ func main() {
 		r.Use(verifyFirebaseToken)
 		r.Post("/records", recordHandler.Post)
 		r.Get("/recommended_records", recommendedRecordsHandler.Get)
-		r.Get("/fixed_records", fixedRecordsHandler.Get)
+		r.Get("/fixed_records/{recordId}", fixedRecordsHandler.Get)
 		r.Put("/fixed_records/{recordId}", fixedRecordsHandler.Update)
+		r.Get("/fixed_records", fixedRecordsHandler.GetAll)
 	})
 
 	// サーバー起動

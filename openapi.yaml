@@ -87,8 +87,44 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorViewModel"
   /fixed_records/{recordId}:
+    get:
+      summary: get fixed record
+      parameters:
+        - in: path
+          name: recordId
+          schema:
+            type: string
+          required: true
+      operationId: getFixedRecord
+      tags:
+        - fixed_records
+      responses:
+        '200':
+          description: Successfully get fixed record
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FixedRecordViewModel"
+        '400':
+          description: RequestBody is invalid
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorViewModel"
+        '401':
+          description: Token missed or invalid
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorViewModel"
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorViewModel"
     put:
-      summary: update fixed_records
+      summary: update fixed record
       parameters:
         - in: path
           name: recordId

@@ -20,6 +20,7 @@ import (
 // The FixedRecordsApiRouter implementation should parse necessary information from the http request, 
 // pass the data to a FixedRecordsApiServicer to perform the required actions, then write the service results to the http response.
 type FixedRecordsApiRouter interface { 
+	GetFixedRecord(http.ResponseWriter, *http.Request)
 	GetFixedRecords(http.ResponseWriter, *http.Request)
 	UpdateFixedRecord(http.ResponseWriter, *http.Request)
 }
@@ -42,6 +43,7 @@ type RecordsApiRouter interface {
 // while the service implementation can ignored with the .openapi-generator-ignore file 
 // and updated with the logic required for the API.
 type FixedRecordsApiServicer interface { 
+	GetFixedRecord(context.Context, string) (ImplResponse, error)
 	GetFixedRecords(context.Context, bool) (ImplResponse, error)
 	UpdateFixedRecord(context.Context, string, FixedRecordViewModel) (ImplResponse, error)
 }

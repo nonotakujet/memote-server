@@ -95,6 +95,44 @@ paths:
       tags:
       - fixed_records
   /fixed_records/{recordId}:
+    get:
+      operationId: getFixedRecord
+      parameters:
+      - explode: false
+        in: path
+        name: recordId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FixedRecordViewModel'
+          description: Successfully get fixed record
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorViewModel'
+          description: RequestBody is invalid
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorViewModel'
+          description: Token missed or invalid
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorViewModel'
+          description: Internal error
+      summary: get fixed record
+      tags:
+      - fixed_records
     put:
       operationId: updateFixedRecord
       parameters:
@@ -137,7 +175,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorViewModel'
           description: Internal error
-      summary: update fixed_records
+      summary: update fixed record
       tags:
       - fixed_records
   /records:

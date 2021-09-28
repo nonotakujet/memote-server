@@ -26,6 +26,26 @@ func NewFixedRecordsApiService() FixedRecordsApiServicer {
 	return &FixedRecordsApiService{}
 }
 
+// GetFixedRecord - get fixed record
+func (s *FixedRecordsApiService) GetFixedRecord(ctx context.Context, recordId string) (ImplResponse, error) {
+	// TODO - update GetFixedRecord with the required logic for this service method.
+	// Add api_fixed_records_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
+
+	//TODO: Uncomment the next line to return response Response(200, FixedRecordViewModel{}) or use other options such as http.Ok ...
+	//return Response(200, FixedRecordViewModel{}), nil
+
+	//TODO: Uncomment the next line to return response Response(400, ErrorViewModel{}) or use other options such as http.Ok ...
+	//return Response(400, ErrorViewModel{}), nil
+
+	//TODO: Uncomment the next line to return response Response(401, ErrorViewModel{}) or use other options such as http.Ok ...
+	//return Response(401, ErrorViewModel{}), nil
+
+	//TODO: Uncomment the next line to return response Response(500, ErrorViewModel{}) or use other options such as http.Ok ...
+	//return Response(500, ErrorViewModel{}), nil
+
+	return Response(http.StatusNotImplemented, nil), errors.New("GetFixedRecord method not implemented")
+}
+
 // GetFixedRecords - get fixed records
 func (s *FixedRecordsApiService) GetFixedRecords(ctx context.Context, isFixed bool) (ImplResponse, error) {
 	// TODO - update GetFixedRecords with the required logic for this service method.
@@ -46,7 +66,7 @@ func (s *FixedRecordsApiService) GetFixedRecords(ctx context.Context, isFixed bo
 	return Response(http.StatusNotImplemented, nil), errors.New("GetFixedRecords method not implemented")
 }
 
-// UpdateFixedRecord - update fixed_records
+// UpdateFixedRecord - update fixed record
 func (s *FixedRecordsApiService) UpdateFixedRecord(ctx context.Context, recordId string, fixedRecordViewModel FixedRecordViewModel) (ImplResponse, error) {
 	// TODO - update UpdateFixedRecord with the required logic for this service method.
 	// Add api_fixed_records_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.

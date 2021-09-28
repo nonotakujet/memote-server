@@ -9,6 +9,7 @@ import (
 )
 
 type FixedRecordsUseCase interface {
+	GetByRecordId(ctx context.Context, recordId string) (*model.UserFixedRecord, error)
 	GetAllByPictureFecthedFlag(ctx context.Context, isPictureFetched bool) ([]*model.UserFixedRecord, error)
 	Update(ctx context.Context, recordId string, userFixedRecordModel *model.UserFixedRecord) (*model.UserFixedRecord, error)
 }
@@ -21,6 +22,18 @@ func NewFixedRecordUseCase(userFixedRecordRepo repository.UserFixedRecord) Fixed
 	return &fixedRecordsUseCase{
 		userFixedRecordRepo: userFixedRecordRepo,
 	}
+}
+
+func (u *fixedRecordsUseCase) GetByRecordId(ctx context.Context, recordId string) (*model.UserFixedRecord, error) {
+	uid, err := model.UserFromContext(ctx)
+	if err != nil {
+		aelog.Errorf(ctx, "Failed get uid from context: %v", err)
+		return nil, err
+	}
+
+	fixedRecordModel, err := u.userFixedRecordRepo.GetById(ctx, uid, recordId)
+
+	return fixedRecordModel, err
 }
 
 func (u *fixedRecordsUseCase) GetAllByPictureFecthedFlag(ctx context.Context, isPictureFetched bool) ([]*model.UserFixedRecord, error) {

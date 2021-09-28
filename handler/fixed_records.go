@@ -16,6 +16,7 @@ import (
 
 type FixedRecordsHandler interface {
 	Get(w http.ResponseWriter, r *http.Request)
+	GetAll(w http.ResponseWriter, r *http.Request)
 	Update(w http.ResponseWriter, r *http.Request)
 }
 
@@ -34,6 +35,48 @@ func NewFixedRecordsHandler(repo registry.Repository) FixedRecordsHandler {
 func (p *fixedRecordsHandler) Get(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
+	recordId := chi.URLParam(r, "recordId")
+
+	aelog.Infof(ctx, "%s\n", recordId)
+	userFixedRecordModel, err := p.usecase.GetByRecordId(ctx, recordId)
+	if err != nil {
+		aelog.Errorf(ctx, "get fixed record failed")
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
+
+	fixedRecordViewModel := &viewmodel.FixedRecordViewModel{
+		Id:               userFixedRecordModel.Id,
+		MainTitle:        userFixedRecordModel.MainTitle,
+		MainPicture:      userFixedRecordModel.MainPicture,
+		IsPictureFetched: userFixedRecordModel.IsPictureFetched,
+		Message:          userFixedRecordModel.Message,
+		EmotionType:      userFixedRecordModel.EmotionType,
+		EmotionLevel:     userFixedRecordModel.EmotionLevel,
+		Locations: funk.Map(userFixedRecordModel.Locations, func(location model.UserFixedRecordLocation) viewmodel.StayedLocationViewModel {
+			return viewmodel.StayedLocationViewModel{
+				Name:      location.Name,
+				Latitude:  location.Latitude,
+				Longitude: location.Longitude,
+				Pictures:  location.Pictures,
+				StartTime: location.StartTime,
+				EndTime:   location.EndTime,
+			}
+		}).([]viewmodel.StayedLocationViewModel),
+		LastRecommendedAt: userFixedRecordModel.LastRecommendedAt,
+		CreatedAt:         userFixedRecordModel.CreatedAt,
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(fixedRecordViewModel); err != nil {
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
+}
+
+func (p *fixedRecordsHandler) GetAll(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
 	isFixedStr := r.URL.Query().Get("is_fixed")
 
 	isPictureFetched, err := strconv.ParseBool(isFixedStr)
@@ -45,7 +88,7 @@ func (p *fixedRecordsHandler) Get(w http.ResponseWriter, r *http.Request) {
 
 	userFixedRecordModels, err := p.usecase.GetAllByPictureFecthedFlag(ctx, isPictureFetched)
 	if err != nil {
-		aelog.Errorf(ctx, "post reocrd failed")
+		aelog.Errorf(ctx, "get all fixed records failed")
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}

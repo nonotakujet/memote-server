@@ -31,6 +31,12 @@ func NewFixedRecordsApiController(s FixedRecordsApiServicer) Router {
 func (c *FixedRecordsApiController) Routes() Routes {
 	return Routes{ 
 		{
+			"GetFixedRecord",
+			strings.ToUpper("Get"),
+			"/fixed_records/{recordId}",
+			c.GetFixedRecord,
+		},
+		{
 			"GetFixedRecords",
 			strings.ToUpper("Get"),
 			"/fixed_records",
@@ -43,6 +49,22 @@ func (c *FixedRecordsApiController) Routes() Routes {
 			c.UpdateFixedRecord,
 		},
 	}
+}
+
+// GetFixedRecord - get fixed record
+func (c *FixedRecordsApiController) GetFixedRecord(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	recordId := params["recordId"]
+	
+	result, err := c.service.GetFixedRecord(r.Context(), recordId)
+	// If an error occurred, encode the error with the status code
+	if err != nil {
+		EncodeJSONResponse(err.Error(), &result.Code, w)
+		return
+	}
+	// If no error, encode the body and the result code
+	EncodeJSONResponse(result.Body, &result.Code, w)
+
 }
 
 // GetFixedRecords - get fixed records
@@ -64,7 +86,7 @@ func (c *FixedRecordsApiController) GetFixedRecords(w http.ResponseWriter, r *ht
 
 }
 
-// UpdateFixedRecord - update fixed_records
+// UpdateFixedRecord - update fixed record
 func (c *FixedRecordsApiController) UpdateFixedRecord(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	recordId := params["recordId"]
