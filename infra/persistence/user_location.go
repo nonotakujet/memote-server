@@ -38,14 +38,26 @@ func (r *UserLocationRepository) GetNearBy(ctx context.Context, uid *model.UID, 
 		10	0.59m	0.97m
 	*/
 
-	// まずは、7桁まで一致しているlocationを抽出.
-	startAt := geohash[:7] + "000"
-	endAt := geohash[:7] + "zzz"
+	// まずは、8桁まで一致しているlocationを抽出.
+	startAt := geohash[:8] + "00"
+	endAt := geohash[:8] + "zz"
 	dss, err := r.db.client.Collection("users").Doc(uid.ID).Collection("locations").OrderBy("geohash", firestore.Asc).StartAt(startAt).EndAt(endAt).Documents(ctx).GetAll()
 
 	if err != nil {
 		aelog.Errorf(ctx, "failed query locations: %v", err)
 		return nil, err
+	}
+
+	// まずは、7桁まで一致しているlocationを抽出.
+	if len(dss) == 0 {
+		startAt = geohash[:7] + "000"
+		endAt = geohash[:7] + "zzz"
+		dss, err = r.db.client.Collection("users").Doc(uid.ID).Collection("locations").OrderBy("geohash", firestore.Asc).StartAt(startAt).EndAt(endAt).Documents(ctx).GetAll()
+
+		if err != nil {
+			aelog.Errorf(ctx, "failed query locations: %v", err)
+			return nil, err
+		}
 	}
 
 	// 7桁の結果がなければ、6桁まで一致しているものを抽出.
