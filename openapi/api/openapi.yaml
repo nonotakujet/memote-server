@@ -101,8 +101,11 @@ components:
       type: array
     FixedRecordViewModel:
       example:
+        isPictureFetched: true
         createdAt: 2000-01-23T04:56:07.000+00:00
+        emotion_level: 5
         mainTitle: mainTitle
+        emotion_type: 1
         mainPicture: mainPicture
         locations:
         - latitude: 0.8008281904610115
@@ -122,6 +125,8 @@ components:
           - pictures
           longitude: 6.027456183070403
         id: id
+        message: message
+        lastRecommendedAt: 2000-01-23T04:56:07.000+00:00
       properties:
         id:
           type: string
@@ -129,19 +134,35 @@ components:
           type: string
         mainPicture:
           type: string
+        isPictureFetched:
+          type: boolean
         locations:
           items:
             $ref: '#/components/schemas/StayedLocationViewModel'
           type: array
+        message:
+          type: string
+        emotion_type:
+          type: integer
+        emotion_level:
+          type: integer
+        lastRecommendedAt:
+          format: date-time
+          type: string
         createdAt:
           format: date-time
           type: string
       required:
       - createdAt
+      - emotion_level
+      - emotion_type
       - id
+      - isPictureFetched
+      - lastRecommendedAt
       - locations
       - mainPicture
       - mainTitle
+      - message
     RecordViewModel:
       example:
         createdAt: 2000-01-23T04:56:07.000+00:00

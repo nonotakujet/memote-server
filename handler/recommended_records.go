@@ -62,9 +62,13 @@ func (p *recommendedRecordsHandler) Get(w http.ResponseWriter, r *http.Request) 
 	for i := range fixedRecordViewModels {
 		userFixedRecordModel := userFixedRecordModels[i]
 		fixedRecordViewModels[i] = &viewmodel.FixedRecordViewModel{
-			Id:          userFixedRecordModel.Id,
-			MainTitle:   userFixedRecordModel.MainTitle,
-			MainPicture: userFixedRecordModel.MainPicture,
+			Id:               userFixedRecordModel.Id,
+			MainTitle:        userFixedRecordModel.MainTitle,
+			MainPicture:      userFixedRecordModel.MainPicture,
+			IsPictureFetched: userFixedRecordModel.IsPictureFetched,
+			Message:          userFixedRecordModel.Message,
+			EmotionType:      userFixedRecordModel.EmotionType,
+			EmotionLevel:     userFixedRecordModel.EmotionLevel,
 			Locations: funk.Map(userFixedRecordModel.Locations, func(location model.UserFixedRecordLocation) viewmodel.StayedLocationViewModel {
 				return viewmodel.StayedLocationViewModel{
 					Name:      location.Name,
@@ -75,7 +79,8 @@ func (p *recommendedRecordsHandler) Get(w http.ResponseWriter, r *http.Request) 
 					EndTime:   location.EndTime,
 				}
 			}).([]viewmodel.StayedLocationViewModel),
-			CreatedAt: userFixedRecordModel.CreatedAt,
+			LastRecommendedAt: userFixedRecordModel.LastRecommendedAt,
+			CreatedAt:         userFixedRecordModel.CreatedAt,
 		}
 	}
 

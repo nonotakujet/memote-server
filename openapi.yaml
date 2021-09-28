@@ -102,7 +102,12 @@ components:
         - id
         - mainTitle
         - mainPicture
+        - isPictureFetched   
         - locations
+        - message
+        - emotion_type
+        - emotion_level
+        - lastRecommendedAt
         - createdAt
       properties:
         id:
@@ -111,10 +116,21 @@ components:
           type: string
         mainPicture:
           type: string
+        isPictureFetched:
+          type: boolean
         locations:
           type: array
           items:
             $ref: "#/components/schemas/StayedLocationViewModel"
+        message:
+          type: string
+        emotion_type:
+          type: integer
+        emotion_level:
+          type: integer
+        lastRecommendedAt:
+          type: string
+          format: date-time
         createdAt:
           type: string
           format: date-time

@@ -14,9 +14,14 @@ type UserFixedRecordLocation struct {
 
 // https://firebase.google.cn/docs/firestore/manage-data/add-data?hl=ja#custom_objects
 type UserFixedRecord struct {
-	Id          string                    `firestore:"id,omitempty"`
-	Locations   []UserFixedRecordLocation `firestore:"locations,omitempty"`
-	MainTitle   string                    `firestore:"mainTitle,omitempty"`
-	MainPicture string                    `firestore:"mainPicture,omitempty"`
-	CreatedAt   time.Time                 `firestore:"createdAt,omitempty"`
+	Id                string                    `firestore:"id,omitempty"`
+	MainTitle         string                    `firestore:"mainTitle,omitempty"`
+	MainPicture       string                    `firestore:"mainPicture,omitempty"`
+	Locations         []UserFixedRecordLocation `firestore:"locations,omitempty"`
+	IsPictureFetched  bool                      `firestore:"isPictureFetched,omitempty"`
+	Message           string                    `firestore:"message,omitempty"`
+	EmotionType       int32                     `firestore:"emotion_type,omitempty"`
+	EmotionLevel      int32                     `firestore:"emotion_level,omitempty"`
+	LastRecommendedAt time.Time                 `firestore:"lastRecommendedAt,omitempty"`
+	CreatedAt         time.Time                 `firestore:"createdAt,omitempty"`
 }

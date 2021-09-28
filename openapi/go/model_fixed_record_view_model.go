@@ -21,7 +21,17 @@ type FixedRecordViewModel struct {
 
 	MainPicture string `json:"mainPicture"`
 
+	IsPictureFetched bool `json:"isPictureFetched"`
+
 	Locations []StayedLocationViewModel `json:"locations"`
+
+	Message string `json:"message"`
+
+	EmotionType int32 `json:"emotion_type"`
+
+	EmotionLevel int32 `json:"emotion_level"`
+
+	LastRecommendedAt time.Time `json:"lastRecommendedAt"`
 
 	CreatedAt time.Time `json:"createdAt"`
 }
