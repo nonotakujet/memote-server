@@ -9,7 +9,6 @@ import (
 )
 
 type Repository interface {
-	NewUserPositionRepository() repository.UserPosition
 	NewUserRecordRepository() repository.UserRecord
 	NewUserFixedRecordRepository() repository.UserFixedRecord
 	NewUserLocationRepository() repository.UserLocation
@@ -17,7 +16,6 @@ type Repository interface {
 
 type repositoryImpl struct {
 	db                  *persistence.DB
-	userPositionoRepo   repository.UserPosition
 	userRecordRepo      repository.UserRecord
 	userFixedRecordRepo repository.UserFixedRecord
 	userLocationRepo    repository.UserLocation
@@ -28,13 +26,6 @@ func NewRepository(ctx context.Context, client *firestore.Client) Repository {
 	return &repositoryImpl{
 		db: db,
 	}
-}
-
-func (r *repositoryImpl) NewUserPositionRepository() repository.UserPosition {
-	if r.userPositionoRepo == nil {
-		r.userPositionoRepo = persistence.NewUserPositionRepository(r.db)
-	}
-	return r.userPositionoRepo
 }
 
 func (r *repositoryImpl) NewUserRecordRepository() repository.UserRecord {

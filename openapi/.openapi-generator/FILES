@@ -3,6 +3,8 @@ README.md
 api/openapi.yaml
 go.mod
 go/api.go
+go/api_fixed_records.go
+go/api_fixed_records_service.go
 go/api_recommended_records.go
 go/api_recommended_records_service.go
 go/api_records.go

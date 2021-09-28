@@ -2,9 +2,9 @@ package persistence
 
 import (
 	"context"
-	"log"
 
 	"cloud.google.com/go/firestore"
+	"github.com/DeNA/aelog"
 	"github.com/nonotakujet/memote-server/domain/model"
 	"github.com/nonotakujet/memote-server/domain/repository"
 )
@@ -44,7 +44,7 @@ func (r *UserLocationRepository) GetNearBy(ctx context.Context, uid *model.UID, 
 	dss, err := r.db.client.Collection("users").Doc(uid.ID).Collection("locations").OrderBy("geohash", firestore.Asc).StartAt(startAt).EndAt(endAt).Documents(ctx).GetAll()
 
 	if err != nil {
-		log.Fatalf("failed query locations: %v", err)
+		aelog.Errorf(ctx, "failed query locations: %v", err)
 		return nil, err
 	}
 
@@ -55,7 +55,7 @@ func (r *UserLocationRepository) GetNearBy(ctx context.Context, uid *model.UID, 
 		dss, err = r.db.client.Collection("users").Doc(uid.ID).Collection("locations").OrderBy("geohash", firestore.Asc).StartAt(startAt).EndAt(endAt).Documents(ctx).GetAll()
 
 		if err != nil {
-			log.Fatalf("failed query locations: %v", err)
+			aelog.Errorf(ctx, "failed query locations: %v", err)
 			return nil, err
 		}
 	}
@@ -66,7 +66,7 @@ func (r *UserLocationRepository) GetNearBy(ctx context.Context, uid *model.UID, 
 		endAt = geohash[:5] + "zzzzz"
 		dss, err = r.db.client.Collection("users").Doc(uid.ID).Collection("locations").OrderBy("geohash", firestore.Asc).StartAt(startAt).EndAt(endAt).Documents(ctx).GetAll()
 		if err != nil {
-			log.Fatalf("failed query locations: %v", err)
+			aelog.Errorf(ctx, "failed query locations: %v", err)
 			return nil, err
 		}
 	}
@@ -75,7 +75,7 @@ func (r *UserLocationRepository) GetNearBy(ctx context.Context, uid *model.UID, 
 	for i, ss := range dss {
 		var userLocation = model.UserLocation{}
 		if err := ss.DataTo(&userLocation); err != nil {
-			log.Fatalf("userLocation parse error : %v", err)
+			aelog.Errorf(ctx, "userLocation parse error : %v", err)
 			return nil, err
 		}
 		userLocaions[i] = &userLocation

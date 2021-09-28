@@ -2,11 +2,10 @@ package handler
 
 import (
 	"encoding/json"
-	"fmt"
-	"log"
 	"net/http"
 	"strconv"
 
+	"github.com/DeNA/aelog"
 	"github.com/nonotakujet/memote-server/domain/model"
 	"github.com/nonotakujet/memote-server/domain/viewmodel"
 	"github.com/nonotakujet/memote-server/registry"
@@ -39,20 +38,20 @@ func (p *recommendedRecordsHandler) Get(w http.ResponseWriter, r *http.Request) 
 
 	latitude, err := strconv.ParseFloat(latitudeStr, 64)
 	if err != nil {
-		fmt.Printf("%s\n", err.Error())
+		aelog.Errorf(ctx, "%s\n", err.Error())
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
 	longitude, err := strconv.ParseFloat(longitudeStr, 64)
 	if err != nil {
-		fmt.Printf("%s\n", err.Error())
+		aelog.Errorf(ctx, "%s\n", err.Error())
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
 
 	userFixedRecordModels, err := p.usecase.Get(ctx, latitude, longitude)
 	if err != nil {
-		log.Fatalf("post reocrd failed")
+		aelog.Errorf(ctx, "post reocrd failed")
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}

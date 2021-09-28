@@ -2,10 +2,10 @@ package usecase
 
 import (
 	"context"
-	"log"
 	"math/rand"
 	"sort"
 
+	"github.com/DeNA/aelog"
 	"github.com/mmcloughlin/geohash"
 	"github.com/nonotakujet/memote-server/domain/model"
 	"github.com/nonotakujet/memote-server/domain/repository"
@@ -30,19 +30,20 @@ func NewRecommendedRecordUseCase(userFixedRecordRepo repository.UserFixedRecord,
 func (u *recommendedRecordsUseCase) Get(ctx context.Context, lat float64, lng float64) ([]*model.UserFixedRecord, error) {
 	uid, err := model.UserFromContext(ctx)
 	if err != nil {
-		log.Fatalf("Failed get uid from context: %v", err)
+		aelog.Errorf(ctx, "Failed get uid from context: %v", err)
+		return nil, err
 	}
 
 	// lat,lngからgeohashを生成.
 	geohash := geohash.EncodeWithPrecision(lat, lng, 10)
 
-	log.Printf("geohash -> %s", geohash)
+	aelog.Infof(ctx, "geohash -> %s", geohash)
 
 	// geohashからlocationを取得.
 	locationModels, err := u.userLocationRepo.GetNearBy(ctx, uid, geohash)
 
 	if err != nil {
-		log.Printf("error: %v\n", err)
+		aelog.Errorf(ctx, "error: %v\n", err)
 		return nil, err
 	}
 

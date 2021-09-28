@@ -19,13 +19,16 @@ import (
 func main() {
 	log.Printf("Server started")
 
+	FixedRecordsApiService := viewmodel.NewFixedRecordsApiService()
+	FixedRecordsApiController := viewmodel.NewFixedRecordsApiController(FixedRecordsApiService)
+
 	RecommendedRecordsApiService := viewmodel.NewRecommendedRecordsApiService()
 	RecommendedRecordsApiController := viewmodel.NewRecommendedRecordsApiController(RecommendedRecordsApiService)
 
 	RecordsApiService := viewmodel.NewRecordsApiService()
 	RecordsApiController := viewmodel.NewRecordsApiController(RecordsApiService)
 
-	router := viewmodel.NewRouter(RecommendedRecordsApiController, RecordsApiController)
+	router := viewmodel.NewRouter(FixedRecordsApiController, RecommendedRecordsApiController, RecordsApiController)
 
 	log.Fatal(http.ListenAndServe(":8080", router))
 }

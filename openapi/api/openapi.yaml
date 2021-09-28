@@ -55,6 +55,91 @@ paths:
       summary: get recommended records
       tags:
       - recommended_records
+  /fixed_records:
+    get:
+      operationId: getFixedRecords
+      parameters:
+      - explode: true
+        in: query
+        name: is_fixed
+        required: true
+        schema:
+          type: boolean
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FixedRecordViewCollection'
+          description: Successfully get fixed records
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorViewModel'
+          description: RequestBody is invalid
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorViewModel'
+          description: Token missed or invalid
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorViewModel'
+          description: Internal error
+      summary: get fixed records
+      tags:
+      - fixed_records
+  /fixed_records/{recordId}:
+    put:
+      operationId: updateFixedRecord
+      parameters:
+      - explode: false
+        in: path
+        name: recordId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FixedRecordViewModel'
+        description: fixed record entry
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FixedRecordViewModel'
+          description: Successfully update fixed record
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorViewModel'
+          description: RequestBody is invalid
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorViewModel'
+          description: Token missed or invalid
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorViewModel'
+          description: Internal error
+      summary: update fixed_records
+      tags:
+      - fixed_records
   /records:
     post:
       operationId: postRecords

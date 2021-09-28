@@ -2,8 +2,8 @@ package usecase
 
 import (
 	"context"
-	"log"
 
+	"github.com/DeNA/aelog"
 	"github.com/nonotakujet/memote-server/domain/model"
 	"github.com/nonotakujet/memote-server/domain/repository"
 	"github.com/nonotakujet/memote-server/domain/viewmodel"
@@ -11,7 +11,7 @@ import (
 )
 
 type RecordUseCase interface {
-	Post(ctx context.Context, recordViewModel *viewmodel.RecordViewModel) *model.UserRecord
+	Post(ctx context.Context, recordViewModel *viewmodel.RecordViewModel) (*model.UserRecord, error)
 }
 
 type recordUseCase struct {
@@ -24,10 +24,11 @@ func NewRecordUseCase(repo repository.UserRecord) RecordUseCase {
 	}
 }
 
-func (u *recordUseCase) Post(ctx context.Context, recordViewModel *viewmodel.RecordViewModel) *model.UserRecord {
+func (u *recordUseCase) Post(ctx context.Context, recordViewModel *viewmodel.RecordViewModel) (*model.UserRecord, error) {
 	uid, err := model.UserFromContext(ctx)
 	if err != nil {
-		log.Fatalf("Failed get uid from context: %v", err)
+		aelog.Errorf(ctx, "Failed get uid from context: %v", err)
+		return nil, err
 	}
 
 	userRecordModel := &model.UserRecord{
@@ -41,7 +42,8 @@ func (u *recordUseCase) Post(ctx context.Context, recordViewModel *viewmodel.Rec
 		}).([]model.UserRecordLocation),
 		CreatedAt: recordViewModel.CreatedAt,
 	}
+
 	u.userRecordRepo.Create(ctx, uid, userRecordModel)
 
-	return userRecordModel
+	return userRecordModel, nil
 }

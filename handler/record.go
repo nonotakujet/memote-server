@@ -2,9 +2,9 @@ package handler
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 
+	"github.com/DeNA/aelog"
 	"github.com/nonotakujet/memote-server/domain/viewmodel"
 	"github.com/nonotakujet/memote-server/registry"
 	"github.com/nonotakujet/memote-server/usecase"
@@ -31,13 +31,13 @@ func (p *recordHandler) Post(w http.ResponseWriter, r *http.Request) {
 
 	recordViewModel := &viewmodel.RecordViewModel{}
 	if err := json.NewDecoder(r.Body).Decode(&recordViewModel); err != nil {
-		log.Fatalf("parse request body failed : %v", err)
+		aelog.Errorf(ctx, "parse request body failed : %v", err)
 		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 		return
 	}
-	userRecordModel := p.usecase.Post(ctx, recordViewModel)
-	if userRecordModel == nil {
-		log.Fatalf("post reocrd failed")
+	_, err := p.usecase.Post(ctx, recordViewModel)
+	if err != nil {
+		aelog.Errorf(ctx, "post reocrd failed")
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
