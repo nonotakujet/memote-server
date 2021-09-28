@@ -222,8 +222,8 @@ components:
         - isPictureFetched   
         - locations
         - message
-        - emotion_type
-        - emotion_level
+        - emotionType
+        - emotionLevel
         - lastRecommendedAt
         - createdAt
       properties:
@@ -241,9 +241,9 @@ components:
             $ref: "#/components/schemas/StayedLocationViewModel"
         message:
           type: string
-        emotion_type:
+        emotionType:
           type: integer
-        emotion_level:
+        emotionLevel:
           type: integer
         lastRecommendedAt:
           type: string
@@ -274,6 +274,9 @@ components:
         - pictures
         - startTime
         - endTime
+        - message
+        - emotionType
+        - emotionLevel
       properties:
         name:
           type: string
@@ -293,6 +296,12 @@ components:
         endTime:
           type: string
           format: date-time
+        message:
+          type: string
+        emotionType:
+          type: integer
+        emotionLevel:
+          type: integer
     LocationViewModel:
       required:
         - lat

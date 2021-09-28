@@ -27,9 +27,9 @@ type FixedRecordViewModel struct {
 
 	Message string `json:"message"`
 
-	EmotionType int32 `json:"emotion_type"`
+	EmotionType int32 `json:"emotionType"`
 
-	EmotionLevel int32 `json:"emotion_level"`
+	EmotionLevel int32 `json:"emotionLevel"`
 
 	LastRecommendedAt time.Time `json:"lastRecommendedAt"`
 

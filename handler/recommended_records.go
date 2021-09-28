@@ -70,12 +70,15 @@ func (p *recommendedRecordsHandler) Get(w http.ResponseWriter, r *http.Request) 
 			EmotionLevel:     userFixedRecordModel.EmotionLevel,
 			Locations: funk.Map(userFixedRecordModel.Locations, func(location model.UserFixedRecordLocation) viewmodel.StayedLocationViewModel {
 				return viewmodel.StayedLocationViewModel{
-					Name:      location.Name,
-					Latitude:  location.Latitude,
-					Longitude: location.Longitude,
-					Pictures:  location.Pictures,
-					StartTime: location.StartTime,
-					EndTime:   location.EndTime,
+					Name:         location.Name,
+					Latitude:     location.Latitude,
+					Longitude:    location.Longitude,
+					Pictures:     location.Pictures,
+					StartTime:    location.StartTime,
+					EndTime:      location.EndTime,
+					Message:      location.Message,
+					EmotionType:  location.EmotionType,
+					EmotionLevel: location.EmotionLevel,
 				}
 			}).([]viewmodel.StayedLocationViewModel),
 			LastRecommendedAt: userFixedRecordModel.LastRecommendedAt,

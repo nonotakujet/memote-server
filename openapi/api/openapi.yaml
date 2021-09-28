@@ -226,27 +226,33 @@ components:
       example:
         isPictureFetched: true
         createdAt: 2000-01-23T04:56:07.000+00:00
-        emotion_level: 5
         mainTitle: mainTitle
-        emotion_type: 1
+        emotionType: 5
         mainPicture: mainPicture
         locations:
         - latitude: 0.8008281904610115
+          emotionType: 1
           name: name
           startTime: 2000-01-23T04:56:07.000+00:00
+          emotionLevel: 5
           endTime: 2000-01-23T04:56:07.000+00:00
+          message: message
           pictures:
           - pictures
           - pictures
           longitude: 6.027456183070403
         - latitude: 0.8008281904610115
+          emotionType: 1
           name: name
           startTime: 2000-01-23T04:56:07.000+00:00
+          emotionLevel: 5
           endTime: 2000-01-23T04:56:07.000+00:00
+          message: message
           pictures:
           - pictures
           - pictures
           longitude: 6.027456183070403
+        emotionLevel: 2
         id: id
         message: message
         lastRecommendedAt: 2000-01-23T04:56:07.000+00:00
@@ -265,9 +271,9 @@ components:
           type: array
         message:
           type: string
-        emotion_type:
+        emotionType:
           type: integer
-        emotion_level:
+        emotionLevel:
           type: integer
         lastRecommendedAt:
           format: date-time
@@ -277,8 +283,8 @@ components:
           type: string
       required:
       - createdAt
-      - emotion_level
-      - emotion_type
+      - emotionLevel
+      - emotionType
       - id
       - isPictureFetched
       - lastRecommendedAt
@@ -314,9 +320,12 @@ components:
     StayedLocationViewModel:
       example:
         latitude: 0.8008281904610115
+        emotionType: 1
         name: name
         startTime: 2000-01-23T04:56:07.000+00:00
+        emotionLevel: 5
         endTime: 2000-01-23T04:56:07.000+00:00
+        message: message
         pictures:
         - pictures
         - pictures
@@ -340,10 +349,19 @@ components:
         endTime:
           format: date-time
           type: string
+        message:
+          type: string
+        emotionType:
+          type: integer
+        emotionLevel:
+          type: integer
       required:
+      - emotionLevel
+      - emotionType
       - endTime
       - latitude
       - longitude
+      - message
       - name
       - pictures
       - startTime

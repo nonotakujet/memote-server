@@ -26,4 +26,10 @@ type StayedLocationViewModel struct {
 	StartTime time.Time `json:"startTime"`
 
 	EndTime time.Time `json:"endTime"`
+
+	Message string `json:"message"`
+
+	EmotionType int32 `json:"emotionType"`
+
+	EmotionLevel int32 `json:"emotionLevel"`
 }
