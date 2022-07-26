@@ -62,8 +62,8 @@ func (p *fixedRecordsHandler) Get(w http.ResponseWriter, r *http.Request) {
 				StartTime:    location.StartTime,
 				EndTime:      location.EndTime,
 				Message:      location.Message,
-				EmotionType:  location.EmotionType,
-				EmotionLevel: location.EmotionLevel,
+				EmotionType:  0, // TODO :　削除
+				EmotionLevel: 0, // TODO : 削除
 			}
 		}).([]viewmodel.StayedLocationViewModel),
 		LastRecommendedAt: userFixedRecordModel.LastRecommendedAt,
@@ -117,8 +117,8 @@ func (p *fixedRecordsHandler) GetAll(w http.ResponseWriter, r *http.Request) {
 					StartTime:    location.StartTime,
 					EndTime:      location.EndTime,
 					Message:      location.Message,
-					EmotionType:  location.EmotionType,
-					EmotionLevel: location.EmotionLevel,
+					EmotionType:  0, // TODO : 削除
+					EmotionLevel: 0, // TODO : 削除
 				}
 			}).([]viewmodel.StayedLocationViewModel),
 			LastRecommendedAt: userFixedRecordModel.LastRecommendedAt,
@@ -157,15 +157,13 @@ func (p *fixedRecordsHandler) Update(w http.ResponseWriter, r *http.Request) {
 		EmotionLevel:     fixedRecordViewModel.EmotionLevel,
 		Locations: funk.Map(fixedRecordViewModel.Locations, func(location viewmodel.StayedLocationViewModel) model.UserFixedRecordLocation {
 			return model.UserFixedRecordLocation{
-				Name:         location.Name,
-				Latitude:     location.Latitude,
-				Longitude:    location.Longitude,
-				Pictures:     location.Pictures,
-				StartTime:    location.StartTime,
-				EndTime:      location.EndTime,
-				Message:      location.Message,
-				EmotionType:  location.EmotionType,
-				EmotionLevel: location.EmotionLevel,
+				Name:      location.Name,
+				Latitude:  location.Latitude,
+				Longitude: location.Longitude,
+				Pictures:  location.Pictures,
+				StartTime: location.StartTime,
+				EndTime:   location.EndTime,
+				Message:   location.Message,
 			}
 		}).([]model.UserFixedRecordLocation),
 		LastRecommendedAt: fixedRecordViewModel.LastRecommendedAt,

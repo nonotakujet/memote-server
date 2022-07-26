@@ -14,7 +14,6 @@ import (
 )
 
 type StayedLocationViewModel struct {
-
 	Name string `json:"name"`
 
 	Latitude float64 `json:"latitude"`

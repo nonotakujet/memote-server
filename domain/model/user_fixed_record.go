@@ -4,15 +4,13 @@ import "time"
 
 // https://firebase.google.cn/docs/firestore/manage-data/add-data?hl=ja#custom_objects
 type UserFixedRecordLocation struct {
-	Name         string    `firestore:"name,omitempty"`
-	Latitude     float64   `firestore:"latitude,omitempty"`
-	Longitude    float64   `firestore:"longitude,omitempty"`
-	Pictures     []string  `firestore:"pictures"`
-	StartTime    time.Time `firestore:"startTime,omitempty"`
-	EndTime      time.Time `firestore:"endTime,omitempty"`
-	Message      string    `firestore:"message,omitempty"`
-	EmotionType  int32     `firestore:"emotion_type,omitempty"`
-	EmotionLevel int32     `firestore:"emotion_level,omitempty"`
+	Name      string    `firestore:"name,omitempty"`
+	Latitude  float64   `firestore:"latitude,omitempty"`
+	Longitude float64   `firestore:"longitude,omitempty"`
+	Pictures  []string  `firestore:"pictures"`
+	StartTime time.Time `firestore:"startTime,omitempty"`
+	EndTime   time.Time `firestore:"endTime,omitempty"`
+	Message   string    `firestore:"message,omitempty"`
 }
 
 // https://firebase.google.cn/docs/firestore/manage-data/add-data?hl=ja#custom_objects

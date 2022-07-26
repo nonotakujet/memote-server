@@ -68,5 +68,7 @@ func (u *fixedRecordsUseCase) Update(ctx context.Context, recordId string, userF
 	// update.
 	fixedRecordModel, err = u.userFixedRecordRepo.Update(ctx, uid, recordId, userFixedRecordModel)
 
+	// TODO : locationに変更があった場合は、location側の変更も行う
+
 	return fixedRecordModel, err
 }

@@ -77,8 +77,8 @@ func (p *recommendedRecordsHandler) Get(w http.ResponseWriter, r *http.Request) 
 					StartTime:    location.StartTime,
 					EndTime:      location.EndTime,
 					Message:      location.Message,
-					EmotionType:  location.EmotionType,
-					EmotionLevel: location.EmotionLevel,
+					EmotionType:  0,
+					EmotionLevel: 0,
 				}
 			}).([]viewmodel.StayedLocationViewModel),
 			LastRecommendedAt: userFixedRecordModel.LastRecommendedAt,

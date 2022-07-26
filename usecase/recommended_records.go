@@ -3,10 +3,8 @@ package usecase
 import (
 	"context"
 	"math/rand"
-	"sort"
 
 	"github.com/DeNA/aelog"
-	"github.com/mmcloughlin/geohash"
 	"github.com/nonotakujet/memote-server/domain/model"
 	"github.com/nonotakujet/memote-server/domain/repository"
 )
@@ -34,37 +32,37 @@ func (u *recommendedRecordsUseCase) Get(ctx context.Context, lat float64, lng fl
 		return nil, err
 	}
 
-	// lat,lngからgeohashを生成.
-	geohash := geohash.EncodeWithPrecision(lat, lng, 10)
-
-	aelog.Infof(ctx, "geohash -> %s", geohash)
-
-	// geohashからlocationを取得.
-	locationModels, err := u.userLocationRepo.GetNearBy(ctx, uid, geohash)
-
-	if err != nil {
-		aelog.Errorf(ctx, "error: %v\n", err)
-		return nil, err
-	}
-
-	if len(locationModels) == 0 {
+	fixedRecordModels, err := u.userFixedRecordRepo.GetAll(ctx, uid)
+	if len(fixedRecordModels) == 0 {
 		return []*model.UserFixedRecord{}, nil
 	}
 
-	// recordの少ない順にソート.
-	sort.Slice(locationModels, func(i, j int) bool { return len(locationModels[i].RecordIds) < len(locationModels[j].RecordIds) })
+	// 重み付き抽選を行う
+	// 重みはレコードに設定されている写真数とする.
+	totalWeight := 0
+	var picked *model.UserFixedRecord
 
-	// 先頭のrecordIdsを取得.
-	recordIds := locationModels[0].RecordIds
-
-	// recordIdsをrandomして先頭を返す.
-	for i := range recordIds {
-		j := rand.Intn(i + 1)
-		recordIds[i], recordIds[j] = recordIds[j], recordIds[i]
+	for i := 0; i < len(fixedRecordModels); i++ {
+		for _, location := range fixedRecordModels[i].Locations {
+			totalWeight += len(location.Pictures)
+		}
 	}
-	recordId := recordIds[0]
 
-	fixedRecordModel, err := u.userFixedRecordRepo.GetById(ctx, uid, recordId)
+	rnd := rand.Intn(100000) % totalWeight
 
-	return []*model.UserFixedRecord{fixedRecordModel}, err
+	for i := 0; i < len(fixedRecordModels); i++ {
+		locationNum := len(fixedRecordModels[i].Locations)
+		if rnd < locationNum {
+			// Hit.
+			picked = fixedRecordModels[i]
+			break
+		}
+		rnd -= locationNum
+	}
+
+	if picked == nil {
+		return []*model.UserFixedRecord{}, nil
+	}
+
+	return []*model.UserFixedRecord{picked}, err
 }
